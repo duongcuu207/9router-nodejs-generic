@@ -1053,12 +1053,12 @@ npm install 9router@latest --no-audit --no-fund</code></pre>
           <div class="acc-a-inner">
             <p>Có hai cách:</p>
             <p>
-              <strong>Cách 1 — qua Dashboard:</strong> đăng nhập rồi đổi password trong phần cài đặt tài khoản.
-              Đây là cách an toàn nhất.
+              <strong>Cách 1 — qua Dashboard:</strong> đăng nhập rồi đổi password trong phần cài đặt tài khoản ( khó nhất, hầu như hosting chỉ dùng qua NAT nên rất khó đổi pass 123456 tại localhost ).
+          
             </p>
             <p>
               <strong>Cách 2 — qua biến môi trường:</strong> đặt <code>ROUTER_PASSWORD</code> mới,
-              nhưng cách này chỉ có tác dụng nếu database chưa lưu password hash.
+              nhưng cách này chỉ có tác dụng nếu database chưa lưu password hash, đây là cách dễ nhất, 9router không yêu cầu đổi pass nữa mới được vào.
             </p>
           </div>
         </div>
