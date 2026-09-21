@@ -1,4 +1,4 @@
-# 9Router Generic
+# 🚀 9Router Generic
 
 <p align="center">
   <b>9Router chạy trên Generic / Pterodactyl với một file <code>start.js</code></b><br>
@@ -7,7 +7,7 @@
 
 ---
 
-##  Tổng quan
+## ✨ Tổng quan
 
 > **Lưu ý:** README này chỉ chứa hướng dẫn triển khai và cấu hình. Mã nguồn `start.js` được tách riêng khỏi tài liệu để README dễ đọc và phù hợp để xuất bản trên GitHub.
 
@@ -42,7 +42,7 @@ Khi khởi động bằng `start.js`, hệ thống sẽ thực hiện:
                 *.trycloudflare.com
 ```
 
-### Các tính năng
+### 🔥 Các tính năng
 
 | Tính năng | Trạng thái |
 |---|:---:|
@@ -80,7 +80,7 @@ Khi khởi động bằng `start.js`, hệ thống sẽ thực hiện:
 
 ---
 
-# Yêu cầu
+# 🧩 Yêu cầu
 
 ## Node.js
 
@@ -154,7 +154,7 @@ In Public URL
 
 ---
 
-# Cấu hình Password
+# 🔐 Cấu hình Password
 
 Trong `start.js`:
 
@@ -188,7 +188,7 @@ ROUTER_PASSWORD=YourStrongPassword@2026!
 
 Khi đó không cần ghi password trực tiếp vào GitHub.
 
-### Lưu ý quan trọng
+### ⚠️ Lưu ý quan trọng
 
 `INITIAL_PASSWORD` là mật khẩu **khởi tạo**.
 
@@ -200,10 +200,11 @@ INITIAL_PASSWORD
 
 sẽ **không tự ghi đè password hiện tại**.
 
-Bước này sẽ vào 9router dễ hơn, không bị dính điều khiển từ xa
+Trong trường hợp server đã được khởi tạo trước đó, hãy đổi password từ Dashboard của 9Router hoặc xử lý database theo quy trình quản trị của instance.
+
 ---
 
-# JWT Secret
+# 🔑 JWT Secret
 
 Có thể đặt:
 
@@ -235,7 +236,7 @@ JWT_SECRET=4f7a0c...<random>...
 
 ---
 
-# Port
+# 🌐 Port
 
 9Router mặc định dùng:
 
@@ -346,7 +347,7 @@ https://xxxxx.trycloudflare.com/v1
 
 ---
 
-# Cloudflare Quick Tunnel không phải domain cố định
+# ⚠️ Cloudflare Quick Tunnel không phải domain cố định
 
 Quick Tunnel tạo một subdomain ngẫu nhiên:
 
@@ -375,7 +376,7 @@ hãy dùng Cloudflare Tunnel được cấu hình với hostname/domain riêng.
 
 ---
 
-# Security
+# 🔒 Security
 
 ## Không commit password vào GitHub
 
