@@ -841,66 +841,6 @@ NODE_ENV=production</code></pre>
   </div>
 </section>
 
-<!-- ============================ SECURITY ============================ -->
-<section id="bao-mat">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <div class="sec-kicker">Bảo mật</div>
-      <h2 class="sec-title">Không commit bí mật lên GitHub</h2>
-      <p class="sec-sub">
-        Password và JWT Secret phải được đặt qua Environment Variables của panel, không viết cứng vào code.
-      </p>
-    </div>
-
-    <div class="dd">
-      <div class="dd-card dd-bad rv">
-        <div class="dd-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></svg>
-          Không nên
-        </div>
-        <ul>
-          <li>Viết cứng password trong <code>start.js</code> rồi push lên GitHub.</li>
-          <li>Commit <code>JWT_SECRET</code> vào repository.</li>
-          <li>Gửi secret qua Discord, screenshot hoặc dán vào issue.</li>
-          <li>Để password mặc định <code>123456</code> hoặc password quá ngắn.</li>
-          <li>Public repo khi trong đó có file <code>.env</code> chứa secret thật.</li>
-        </ul>
-      </div>
-
-      <div class="dd-card dd-good rv">
-        <div class="dd-head">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
-          Nên làm
-        </div>
-        <ul>
-          <li>Đặt <code>ROUTER_PASSWORD</code> trong Environment Variables của panel.</li>
-          <li>Đặt <code>JWT_SECRET</code> là chuỗi ngẫu nhiên dài, tạo bằng <code>openssl</code>.</li>
-          <li>Để script tự sinh password nếu bạn chưa muốn tự đặt.</li>
-          <li>Thêm <code>.9router/</code> và <code>.cloudflared/</code> vào <code>.gitignore</code>.</li>
-          <li>Đổi password từ Dashboard ngay sau lần đăng nhập đầu tiên.</li>
-        </ul>
-      </div>
-    </div>
-
-    <div class="code mt-3 rv" data-copy-block>
-      <div class="code-head">
-        <span class="code-lang">text</span>
-        <span class="code-file">.gitignore khuyến nghị</span>
-        <div class="code-actions">
-          <button class="copy-btn" type="button" data-copy>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
-            Copy
-          </button>
-        </div>
-      </div>
-      <pre><code>node_modules/
-.9router/
-.cloudflared/
-.env
-*.log</code></pre>
-    </div>
-  </div>
-</section>
 
 <!-- ============================ TROUBLESHOOTING ============================ -->
 <section class="section-alt" id="loi">
