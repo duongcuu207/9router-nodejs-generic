@@ -1,5 +1,4 @@
-# 🚀 9Router Generic + Cloudflare Tunnel
-
+# 🚀 9Router Generic Hỗ Trợ NAT Hosting App Cheap
 <p align="center">
   <b>9Router chạy trên Generic / Pterodactyl với một file <code>start.js</code></b><br>
   Tự động cài đặt • Tự động chọn Port • Tự động đặt Password • Cloudflare Quick Tunnel
