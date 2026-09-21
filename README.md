@@ -1,4 +1,3 @@
-[README-9router-generic-guide.md](https://github.com/user-attachments/files/32450110/README-9router-generic-guide.md)
 # 🚀 9Router Generic + Cloudflare Tunnel
 
 <p align="center">
