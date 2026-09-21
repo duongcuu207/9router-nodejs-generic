@@ -1,0 +1,15 @@
+{
+  "name": "9router-generic",
+  "version": "1.0.0",
+  "private": true,
+  "description": "9Router Generic deployment with Cloudflare Quick Tunnel",
+  "scripts": {
+    "start": "node start.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "9router": "^0.5.81"
+  }
+}

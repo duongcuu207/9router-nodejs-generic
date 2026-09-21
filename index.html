@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>9Router Generic — Hướng dẫn deploy Pterodactyl + Cloudflare Tunnel</title>
+<meta name="description" content="Hướng dẫn deploy 9Router trên Generic / Pterodactyl bằng một file start.js: tự cài đặt, tự chọn port, tự đặt password và Cloudflare Quick Tunnel.">
+<meta name="theme-color" content="#0a0a0c">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="9Router Generic + Cloudflare Tunnel">
+<meta property="og:description" content="Deploy 9Router trên Pterodactyl chỉ với một file start.js. Tự cài đặt, tự chọn port, tự đặt password, Cloudflare Quick Tunnel.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23ff7a18'/><text x='50' y='74' font-size='64' font-weight='900' font-family='Arial' text-anchor='middle' fill='%230a0a0c'>9</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<!-- ============================ NAVBAR ============================ -->
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="brand-mark">9</span>
+      <span class="brand-text">9<b>ROUTER</b></span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#tinh-nang">Tính năng</a>
+      <a href="#cai-dat">Cài đặt</a>
+      <a href="#cau-hinh">Cấu hình</a>
+      <a href="#source">start.js</a>
+      <a href="#cloudflare">Cloudflare</a>
+      <a href="#api">API</a>
+      <a href="#bao-mat">Bảo mật</a>
+      <a href="#loi">Xử lý lỗi</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <a href="#source" class="nav-cta">Tải start.js</a>
+
+    <button class="burger" id="burger" aria-label="Mở menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+<!-- ============================ HERO ============================ -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="pill">
+          <span class="dot"></span>
+          Generic / Pterodactyl Ready
+        </div>
+
+        <h1>
+          Deploy <span class="grad">9Router</span><br>
+          chỉ với một file <span class="grad">start.js</span>
+        </h1>
+
+        <p class="lead">
+          Không cần cấu hình phức tạp. Upload <code class="kbd">start.js</code>, đặt startup
+          <code class="kbd">node start.js</code> và để script tự lo phần còn lại:
+          cài đặt, chọn port, tạo password, mở Cloudflare Quick Tunnel và in Public URL.
+        </p>
+
+        <div class="hero-tags">
+          <span class="tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"/><path d="M21 3v6h-6"/></svg>
+            Tự động cài đặt
+          </span>
+          <span class="tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+            Tự chọn Port
+          </span>
+          <span class="tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+            Tự đặt Password
+          </span>
+          <span class="tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6-1.6A4 4 0 0 0 6.5 19z"/></svg>
+            Cloudflare Quick Tunnel
+          </span>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#cai-dat" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            Bắt đầu nhanh
+          </a>
+          <a href="#source" class="btn btn-ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            Tải start.js
+          </a>
+        </div>
+      </div>
+
+      <div class="term">
+        <div class="term-bar">
+          <span class="term-dots"><i></i><i></i><i></i></span>
+          <span class="term-title">pterodactyl — node start.js</span>
+        </div>
+        <div class="term-body" id="terminal" aria-label="Mô phỏng log khởi động"></div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats mt-3 rv">
+      <div class="stat">
+        <div class="stat-val">Node 20+</div>
+        <div class="stat-lbl">Yêu cầu tối thiểu</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">20128</div>
+        <div class="stat-lbl">Port mặc định của 9Router</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">1 file</div>
+        <div class="stat-lbl">Chỉ cần start.js</div>
+      </div>
+      <div class="stat">
+        <div class="stat-val">0 port</div>
+        <div class="stat-lbl">Không cần mở inbound</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FLOW ============================ -->
+<section class="section-alt" id="luong">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">Luồng hoạt động</div>
+      <h2 class="sec-title">Từ panel đến URL công khai</h2>
+      <p class="sec-sub">
+        Một tiến trình duy nhất quản lý cả 9Router và cloudflared. Tunnel được tạo theo hướng
+        outbound nên container không cần mở bất kỳ cổng vào nào.
+      </p>
+    </div>
+
+    <div class="flow rv">
+      <div class="flow-row">
+        <div class="node node-ghost">Generic Panel<small>Pterodactyl / Pelican</small></div>
+      </div>
+      <div class="arrow arrow-v">↓</div>
+      <div class="flow-row">
+        <div class="node node-primary">node start.js<small>Bootstrap duy nhất</small></div>
+      </div>
+      <div class="arrow arrow-v">↓</div>
+
+      <div class="flow-branch">
+        <div class="flow-col">
+          <div class="arrow arrow-v">↓</div>
+          <div class="node">9Router<small>0.0.0.0:PORT</small></div>
+        </div>
+        <div class="flow-col">
+          <div class="arrow arrow-v">↓</div>
+          <div class="node node-ghost">cloudflared<small>Quick Tunnel</small></div>
+        </div>
+      </div>
+
+      <div class="arrow arrow-v">↓</div>
+      <div class="flow-row">
+        <div class="node node-ghost">Cloudflare Edge<small>HTTPS tự động</small></div>
+      </div>
+      <div class="arrow arrow-v">↓</div>
+      <div class="flow-row">
+        <div class="node node-url">https://xxxxx.trycloudflare.com</div>
+      </div>
+    </div>
+
+    <div class="callout mt-3 rv">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+      <div>
+        <h4>Vì sao không cần mở inbound port?</h4>
+        <p>
+          cloudflared chủ động kết nối ra Cloudflare Edge, sau đó Edge mới chuyển tiếp request
+          vào <code class="kbd">127.0.0.1:PORT</code> bên trong container. Firewall của panel
+          không cần thay đổi gì.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FEATURES ============================ -->
+<section id="tinh-nang">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">Tính năng</div>
+      <h2 class="sec-title">Script tự làm mọi thứ</h2>
+      <p class="sec-sub">
+        Toàn bộ các bước dưới đây được xử lý tự động khi container khởi động, không cần thao tác thủ công.
+      </p>
+    </div>
+
+    <div class="grid g3">
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></div>
+        <h3>Tự cài 9Router</h3>
+        <p>Kiểm tra <code>node_modules/9router</code>, nếu thiếu sẽ chạy <code>npm install 9router@latest</code>.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <h3>Kiểm tra Node.js</h3>
+        <p>Cảnh báo nếu dưới Node 20, dừng hẳn nếu dưới Node 18 để tránh lỗi khó hiểu.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg></div>
+        <h3>Tự lấy Port của panel</h3>
+        <p>Ưu tiên <code>SERVER_PORT</code>, sau đó <code>PORT</code>, cuối cùng là <code>20128</code>.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3.6 9h16.8M3.6 15h16.8"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg></div>
+        <h3>Bind 0.0.0.0</h3>
+        <p>Lắng nghe trên mọi interface để panel và cloudflared đều truy cập được.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+        <h3>Tự sinh Password</h3>
+        <p>Nếu không đặt <code>ROUTER_PASSWORD</code>, script sinh password mạnh và lưu lại để không đổi sau restart.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2l-2 2m-7.6 7.6a5 5 0 1 1-7.1 7.1 5 5 0 0 1 7.1-7.1zm0 0L15 8m0 0l3 3 3-3-3-3-3 3z"/></svg></div>
+        <h3>Tự sinh JWT Secret</h3>
+        <p>Secret 64 ký tự hex được tạo bằng <code>crypto.randomBytes</code> và lưu vào data dir.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 12h8"/></svg></div>
+        <h3>Data directory riêng</h3>
+        <p>Toàn bộ dữ liệu nằm trong <code>.9router/</code> — giữ thư mục này để không mất dữ liệu.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9 6 6 0 0 0-11.6-1.6A4 4 0 0 0 6.5 19z"/><path d="M12 12v6"/><path d="m9.5 15.5 2.5 2.5 2.5-2.5"/></svg></div>
+        <h3>Tự tải cloudflared</h3>
+        <p>Tải binary trực tiếp từ GitHub Releases, không cần API token và không bị rate limit.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 20h8M12 18v2"/><path d="M8 10h8M8 13h5"/></svg></div>
+        <h3>AMD64 / ARM64 / ARM</h3>
+        <p>Nhận diện kiến trúc CPU và chọn đúng bản cloudflared tương ứng.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l2-7 4 14 2-7h4"/></svg></div>
+        <h3>Health check thông minh</h3>
+        <p>Chờ 9Router sẵn sàng qua <code>/api/health</code>, tự động fallback sang kiểm tra TCP.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.2-8.6"/><path d="M21 3v6h-6"/></svg></div>
+        <h3>Tự phục hồi tunnel</h3>
+        <p>Nếu cloudflared thoát, script tự tạo lại tunnel với backoff và in URL mới.</p>
+      </div>
+
+      <div class="card rv">
+        <div class="card-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle cx="12" cy="12" r="4"/></svg></div>
+        <h3>Shutdown sạch</h3>
+        <p>Bắt <code>SIGINT</code> / <code>SIGTERM</code> / <code>SIGHUP</code> và dừng cả cây tiến trình con.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ QUICK INSTALL ============================ -->
+<section class="section-alt" id="cai-dat">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">Cài đặt nhanh</div>
+      <h2 class="sec-title">Ba bước để chạy</h2>
+      <p class="sec-sub">Thực hiện trong panel Generic / Pterodactyl của bạn.</p>
+    </div>
+
+    <div class="steps">
+      <div class="step-item rv">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Upload start.js vào thư mục chính của server</h3>
+          <p>
+            Đặt file <code class="kbd">start.js</code> ngay tại thư mục gốc của server (cùng cấp với
+            nơi panel chạy lệnh). Nếu dùng Git, đẩy file này lên repository rồi để panel tự pull.
+          </p>
+
+          <div class="code" data-copy-block>
+            <div class="code-head">
+              <span class="code-lang">bash</span>
+              <span class="code-file">clone từ GitHub</span>
+              <div class="code-actions">
+                <button class="copy-btn" type="button" data-copy>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <pre><code>git clone https://github.com/&lt;user&gt;/&lt;repo&gt;.git
+cd &lt;repo&gt;
+node start.js</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item rv">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Đặt Startup Command trong panel</h3>
+          <p>
+            Trong phần Startup của Generic / Pterodactyl, nhập đúng lệnh dưới đây.
+            <span class="badge-mini">Không dùng npm start</span>
+          </p>
+
+          <div class="code" data-copy-block>
+            <div class="code-head">
+              <span class="code-lang">bash</span>
+              <span class="code-file">Startup Command</span>
+              <div class="code-actions">
+                <button class="copy-btn" type="button" data-copy>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <pre><code>node start.js</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item rv">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Start server và lấy Public URL trong Console</h3>
+          <p>
+            Lần chạy đầu sẽ cài 9Router và tải cloudflared nên mất khoảng 1–3 phút.
+            Khi xong, console in ra bảng thông tin sau:
+          </p>
+
+          <div class="code" data-copy-block>
+            <div class="code-head">
+              <span class="code-lang">console</span>
+              <span class="code-file">output mẫu</span>
+              <div class="code-actions">
+                <button class="copy-btn" type="button" data-copy>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <pre><code>==========================================================
+            CLOUDFLARE PUBLIC URL
+==========================================================
+PUBLIC    : https://xxxxx-xxxx.trycloudflare.com
+DASHBOARD : https://xxxxx-xxxx.trycloudflare.com/dashboard
+API (v1)  : https://xxxxx-xxxx.trycloudflare.com/v1
+LOCAL     : http://127.0.0.1:20128
+USER      : admin
+PASSWORD  : ********
+==========================================================</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout ok mt-3 rv">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+      <div>
+        <h4>Xong — mở URL và đăng nhập</h4>
+        <p>
+          Mở <code class="kbd">PUBLIC</code> hoặc <code class="kbd">DASHBOARD</code> trên trình duyệt,
+          đăng nhập bằng <code class="kbd">admin</code> và password mà script in ra.
+          Sau đó vào <strong>Providers</strong> để kết nối nhà cung cấp AI đầu tiên.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CONFIG ============================ -->
+<section id="cau-hinh">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">Cấu hình</div>
+      <h2 class="sec-title">Password, JWT, Port và biến môi trường</h2>
+      <p class="sec-sub">
+        Cách khuyến nghị là đặt qua Environment Variables của panel, không sửa trực tiếp vào code.
+      </p>
+    </div>
+
+    <div class="tabs" id="cfgTabs" role="tablist">
+      <button class="tab active" type="button" role="tab" data-tab="tab-pass">Password</button>
+      <button class="tab" type="button" role="tab" data-tab="tab-jwt">JWT Secret</button>
+      <button class="tab" type="button" role="tab" data-tab="tab-port">Port</button>
+      <button class="tab" type="button" role="tab" data-tab="tab-env">Env Variables</button>
+    </div>
+
+    <!-- PASSWORD -->
+    <div class="tab-panel active" id="tab-pass" role="tabpanel">
+      <div class="grid g2">
+        <div class="card">
+          <h3>Đặt password qua panel</h3>
+          <p class="mb-2">
+            Thêm biến môi trường <code>ROUTER_PASSWORD</code>. Script sẽ dùng đúng giá trị này
+            làm mật khẩu khởi tạo thay vì tự sinh.
+          </p>
+          <div class="code" data-copy-block>
+            <div class="code-head">
+              <span class="code-lang">env</span>
+              <span class="code-file">Environment Variable</span>
+              <div class="code-actions">
+                <button class="copy-btn" type="button" data-copy>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <pre><code>ROUTER_PASSWORD=YourStrongPassword@2026!</code></pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Cơ chế tự sinh password</h3>
+          <p class="mb-2">
+            Nếu không đặt biến môi trường, script sinh password 20 ký tự và lưu vào
+            <code>.9router/.initial-password</code>. Nhờ vậy password <strong>không đổi</strong>
+            sau mỗi lần restart container.
+          </p>
+          <div class="code" data-copy-block>
+            <div class="code-head">
+              <span class="code-lang">js</span>
+              <span class="code-file">thứ tự ưu tiên</span>
+              <div class="code-actions">
+                <button class="copy-btn" type="button" data-copy>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <pre><code>ROUTER_PASSWORD (env)
+      ↓ nếu trống
+.9router/.initial-password (file đã lưu)
+      ↓ nếu chưa có
+sinh mới + ghi vào file</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warn mt-3">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+        <div>
+          <h4>INITIAL_PASSWORD chỉ là mật khẩu khởi tạo</h4>
+          <p>
+            Khi database đã lưu password hash, việc đổi <code>INITIAL_PASSWORD</code>
+            <strong>không ghi đè</strong> password hiện tại. Nếu instance đã khởi tạo trước đó,
+            hãy đổi password từ Dashboard của 9Router.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- JWT -->
+    <div class="tab-panel" id="tab-jwt" role="tabpanel">
+      <div class="grid g2">
+        <div class="card">
+          <h3>Đặt JWT Secret</h3>
+          <p class="mb-2">
+            Dùng chuỗi ngẫu nhiên, dài. Không dùng secret ngắn hoặc dễ đoán vì đây là khóa ký
+            cookie xác thực của dashboard.
+          </p>
+          <div class="code" data-copy-block>
+            <div class="code-head">
+              <span class="code-lang">env</span>
+              <span class="code-file">Environment Variable</span>
+              <div class="code-actions">
+                <button class="copy-btn" type="button" data-copy>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <pre><code>JWT_SECRET=9router-super-secret-2026-change-this</code></pre>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Tạo secret ngẫu nhiên</h3>
+          <p class="mb-2">
+            Trên Linux của container, dùng lệnh sau rồi dán kết quả vào biến môi trường.
+            Script cũng tự sinh secret 64 ký tự hex nếu bạn bỏ trống.
+          </p>
+          <div class="code" data-copy-block>
+            <div class="code-head">
+              <span class="code-lang">bash</span>
+              <span class="code-file">openssl</span>
+              <div class="code-actions">
+                <button class="copy-btn" type="button" data-copy>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <pre><code>openssl rand -hex 32</code></pre>
+          </div>
+          <div class="code mt-2" data-copy-block>
+            <div class="code-head">
+              <span class="code-lang">bash</span>
+              <span class="code-file">node</span>
+              <div class="code-actions">
+                <button class="copy-btn" type="button" data-copy>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                  Copy
+                </button>
+              </div>
+            </div>
+            <pre><code>node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PORT -->
+    <div class="tab-panel" id="tab-port" role="tabpanel">
+      <div class="card mb-2">
+        <h3>Thứ tự ưu tiên chọn port</h3>
+        <p class="mb-2">9Router mặc định dùng <code>20128</code>, nhưng script ưu tiên port mà panel cấp.</p>
+        <div class="code" data-copy-block>
+          <div class="code-head">
+            <span class="code-lang">js</span>
+            <span class="code-file">thứ tự ưu tiên</span>
+            <div class="code-actions">
+              <button class="copy-btn" type="button" data-copy>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+          <pre><code>process.env.SERVER_PORT   // panel cấp, ưu tiên cao nhất
+process.env.PORT          // dự phòng
+'20128'                   // mặc định cuối cùng</code></pre>
+        </div>
+      </div>
+
+      <div class="tbl-wrap">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>Panel cấp</th><th>9Router chạy</th><th>Dashboard</th><th>API</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><code>SERVER_PORT=25565</code></td>
+                <td><code>0.0.0.0:25565</code></td>
+                <td><code>http://IP:25565</code></td>
+                <td><code>http://IP:25565/v1</code></td>
+              </tr>
+              <tr>
+                <td>không có biến nào</td>
+                <td><code>0.0.0.0:20128</code></td>
+                <td><code>http://IP:20128</code></td>
+                <td><code>http://IP:20128/v1</code></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ENV -->
+    <div class="tab-panel" id="tab-env" role="tabpanel">
+      <div class="tbl-wrap">
+        <div class="tbl-scroll">
+          <table>
+            <thead>
+              <tr><th>Biến</th><th>Ví dụ</th><th>Chức năng</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><code>SERVER_PORT</code></td><td><code>25565</code></td><td>Port do panel cấp (ưu tiên cao nhất)</td></tr>
+              <tr><td><code>PORT</code></td><td><code>20128</code></td><td>Port dự phòng cho 9Router</td></tr>
+              <tr><td><code>ROUTER_PASSWORD</code></td><td><code>MyPassword@2026!</code></td><td>Password khởi tạo</td></tr>
+              <tr><td><code>JWT_SECRET</code></td><td>chuỗi ngẫu nhiên</td><td>Khóa ký JWT cho cookie dashboard</td></tr>
+              <tr><td><code>DATA_DIR</code></td><td><code>.9router</code></td><td>Nơi lưu dữ liệu instance</td></tr>
+              <tr><td><code>NODE_ENV</code></td><td><code>production</code></td><td>Chế độ chạy</td></tr>
+              <tr><td><code>CF_TUNNEL</code></td><td><code>0</code></td><td>Đặt <code>0</code> để tắt Cloudflare Tunnel, chỉ chạy local</td></tr>
+              <tr><td><code>AUTO_UPDATE</code></td><td><code>1</code></td><td>Luôn cài <code>9router@latest</code> mỗi lần khởi động</td></tr>
+              <tr><td><code>READY_TIMEOUT</code></td><td><code>300</code></td><td>Số giây chờ 9Router mở port</td></tr>
+              <tr><td><code>ROUTER_LOG</code></td><td><code>0</code></td><td>Đặt <code>0</code> để ẩn log chi tiết của server</td></tr>
+              <tr><td><code>CLOUDFLARED_BIN</code></td><td><code>/usr/bin/cloudflared</code></td><td>Dùng binary cloudflared có sẵn thay vì tải mới</td></tr>
+              <tr><td><code>CF_ARGS</code></td><td><code>--protocol http2</code></td><td>Tham số bổ sung cho cloudflared</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="code mt-3" data-copy-block>
+        <div class="code-head">
+          <span class="code-lang">env</span>
+          <span class="code-file">cấu hình khuyến nghị cho panel</span>
+          <div class="code-actions">
+            <button class="copy-btn" type="button" data-copy>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+              Copy
+            </button>
+          </div>
+        </div>
+        <pre><code>SERVER_PORT=25565
+ROUTER_PASSWORD=YOUR_STRONG_PASSWORD
+JWT_SECRET=YOUR_LONG_RANDOM_SECRET
+NODE_ENV=production</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ START.JS SOURCE ============================ -->
+<section class="section-alt" id="source">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">Mã nguồn</div>
+      <h2 class="sec-title">File start.js hoàn chỉnh</h2>
+      <p class="sec-sub">
+        Đây là toàn bộ nội dung file. Bấm <strong>Copy</strong> để dán vào panel hoặc
+        <strong>Tải start.js</strong> để lưu về máy rồi upload lên server.
+      </p>
+    </div>
+
+    <div class="viewer rv">
+      <div class="viewer-head">
+        <span class="viewer-file">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3v5h5"/><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h9l5 5v11a2 2 0 0 1-2 2z"/></svg>
+          start.js
+        </span>
+        <span class="viewer-meta" id="viewerMeta">đang tải…</span>
+
+        <div class="viewer-tools">
+          <button class="btn btn-ghost btn-sm" type="button" id="toggleViewer">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <span id="toggleViewerText">Mở rộng</span>
+          </button>
+          <button class="btn btn-ghost btn-sm" type="button" id="copyAll">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+            Copy toàn bộ
+          </button>
+          <button class="btn btn-primary btn-sm" type="button" id="downloadJs">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
+            Tải start.js
+          </button>
+        </div>
+      </div>
+
+      <div class="viewer-body" id="viewerBody">
+        <div class="code-scroll" id="codeScroll">
+          <div class="code-table" id="codeTable"></div>
+        </div>
+      </div>
+
+      <div class="viewer-foot">
+        <span class="viewer-hint">
+          Script yêu cầu Node.js 20+ và chạy được trên Linux (amd64/arm64/arm), Windows và macOS.
+        </span>
+        <span class="viewer-hint" id="viewerHint">—</span>
+      </div>
+    </div>
+
+    <div class="callout mt-3 rv">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01M11 12h1v5h1"/></svg>
+      <div>
+        <h4>Cấu trúc repository sau khi chạy</h4>
+        <p>Hai thư mục dưới đây được tạo tự động trong lần chạy đầu tiên:</p>
+        <div class="code mt-2" data-copy-block>
+          <div class="code-head">
+            <span class="code-lang">text</span>
+            <span class="code-file">cây thư mục</span>
+            <div class="code-actions">
+              <button class="copy-btn" type="button" data-copy>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+          <pre><code>9router-generic/
+├── start.js
+├── package.json
+├── README.md
+│
+├── .9router/                  # dữ liệu instance (giữ lại khi restart)
+│   ├── db/data.sqlite
+│   ├── .initial-password
+│   ├── .jwt-secret
+│   └── last-public-url.txt
+│
+└── .cloudflared/
+    └── cloudflared            # binary tự tải về</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CLOUDFLARE ============================ -->
+<section id="cloudflare">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">Cloudflare</div>
+      <h2 class="sec-title">Quick Tunnel hoạt động thế nào</h2>
+      <p class="sec-sub">
+        Script tự tải cloudflared và chạy lệnh tương đương bên dưới, sau đó đọc URL công khai
+        từ log của tiến trình.
+      </p>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <h3>Lệnh script thực thi</h3>
+        <p class="mb-2">Chạy nền, không cần quyền root và không cần đăng nhập Cloudflare.</p>
+        <div class="code" data-copy-block>
+          <div class="code-head">
+            <span class="code-lang">bash</span>
+            <span class="code-file">quick tunnel</span>
+            <div class="code-actions">
+              <button class="copy-btn" type="button" data-copy>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+          <pre><code>./.cloudflared/cloudflared tunnel \
+  --no-autoupdate \
+  --url http://127.0.0.1:20128</code></pre>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Chạy thủ công để kiểm tra</h3>
+        <p class="mb-2">Nếu tunnel không tự tạo, chạy trực tiếp lệnh này trong terminal của panel.</p>
+        <div class="code" data-copy-block>
+          <div class="code-head">
+            <span class="code-lang">bash</span>
+            <span class="code-file">debug tunnel</span>
+            <div class="code-actions">
+              <button class="copy-btn" type="button" data-copy>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                Copy
+              </button>
+            </div>
+          </div>
+          <pre><code>./.cloudflared/cloudflared tunnel \
+  --no-autoupdate \
+  --url http://127.0.0.1:$SERVER_PORT</code></pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn mt-3 rv">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg>
+      <div>
+        <h4>Quick Tunnel không phải domain cố định</h4>
+        <p>
+          Mỗi lần tunnel được tạo lại, Cloudflare cấp một subdomain ngẫu nhiên mới dạng
+          <code>*.trycloudflare.com</code>. Quick Tunnel phù hợp cho testing, development, demo
+          và public tạm thời — không phải giải pháp domain production lâu dài.
+        </p>
+        <p class="mt-1">
+          Khi cần domain riêng như <code>api.example.com</code>, hãy dùng Cloudflare Tunnel
+          có cấu hình hostname thay vì Quick Tunnel.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ API ============================ -->
+<section class="section-alt" id="api">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">API</div>
+      <h2 class="sec-title">Cấu hình endpoint cho công cụ AI</h2>
+      <p class="sec-sub">
+        Tạo API key trong Dashboard, sau đó điền ba thông số sau vào Cursor, Cline, Claude Code,
+        Codex hoặc bất kỳ công cụ tương thích OpenAI nào.
+      </p>
+    </div>
+
+    <div class="grid g2">
+      <div class="card rv">
+        <h3>Dùng qua Internet (Public)</h3>
+        <div class="api-row">
+          <span class="api-key">Base URL</span>
+          <span class="api-val">https://xxxxx.trycloudflare.com/v1</span>
+        </div>
+        <div class="api-row">
+          <span class="api-key">API Key</span>
+          <span class="api-val">&lt;API_KEY_FROM_9ROUTER&gt;</span>
+        </div>
+        <div class="api-row">
+          <span class="api-key">Model</span>
+          <span class="api-val">&lt;MODEL_FROM_DASHBOARD&gt;</span>
+        </div>
+      </div>
+
+      <div class="card rv">
+        <h3>Dùng nội bộ (Local)</h3>
+        <div class="api-row">
+          <span class="api-key">Base URL</span>
+          <span class="api-val">http://127.0.0.1:20128/v1</span>
+        </div>
+        <div class="api-row">
+          <span class="api-key">API Key</span>
+          <span class="api-val">&lt;API_KEY_FROM_9ROUTER&gt;</span>
+        </div>
+        <div class="api-row">
+          <span class="api-key">Model</span>
+          <span class="api-val">&lt;MODEL_FROM_DASHBOARD&gt;</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="code mt-3 rv" data-copy-block>
+      <div class="code-head">
+        <span class="code-lang">bash</span>
+        <span class="code-file">kiểm tra API bằng curl</span>
+        <div class="code-actions">
+          <button class="copy-btn" type="button" data-copy>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+      <pre><code>curl https://xxxxx.trycloudflare.com/v1/models \
+  -H "Authorization: Bearer &lt;API_KEY_FROM_9ROUTER&gt;"</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ SECURITY ============================ -->
+<section id="bao-mat">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">Bảo mật</div>
+      <h2 class="sec-title">Không commit bí mật lên GitHub</h2>
+      <p class="sec-sub">
+        Password và JWT Secret phải được đặt qua Environment Variables của panel, không viết cứng vào code.
+      </p>
+    </div>
+
+    <div class="dd">
+      <div class="dd-card dd-bad rv">
+        <div class="dd-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m15 9-6 6M9 9l6 6"/></svg>
+          Không nên
+        </div>
+        <ul>
+          <li>Viết cứng password trong <code>start.js</code> rồi push lên GitHub.</li>
+          <li>Commit <code>JWT_SECRET</code> vào repository.</li>
+          <li>Gửi secret qua Discord, screenshot hoặc dán vào issue.</li>
+          <li>Để password mặc định <code>123456</code> hoặc password quá ngắn.</li>
+          <li>Public repo khi trong đó có file <code>.env</code> chứa secret thật.</li>
+        </ul>
+      </div>
+
+      <div class="dd-card dd-good rv">
+        <div class="dd-head">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/></svg>
+          Nên làm
+        </div>
+        <ul>
+          <li>Đặt <code>ROUTER_PASSWORD</code> trong Environment Variables của panel.</li>
+          <li>Đặt <code>JWT_SECRET</code> là chuỗi ngẫu nhiên dài, tạo bằng <code>openssl</code>.</li>
+          <li>Để script tự sinh password nếu bạn chưa muốn tự đặt.</li>
+          <li>Thêm <code>.9router/</code> và <code>.cloudflared/</code> vào <code>.gitignore</code>.</li>
+          <li>Đổi password từ Dashboard ngay sau lần đăng nhập đầu tiên.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="code mt-3 rv" data-copy-block>
+      <div class="code-head">
+        <span class="code-lang">text</span>
+        <span class="code-file">.gitignore khuyến nghị</span>
+        <div class="code-actions">
+          <button class="copy-btn" type="button" data-copy>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+            Copy
+          </button>
+        </div>
+      </div>
+      <pre><code>node_modules/
+.9router/
+.cloudflared/
+.env
+*.log</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TROUBLESHOOTING ============================ -->
+<section class="section-alt" id="loi">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">Xử lý lỗi</div>
+      <h2 class="sec-title">Các lỗi thường gặp</h2>
+      <p class="sec-sub">Bấm vào từng mục để xem nguyên nhân và cách khắc phục.</p>
+    </div>
+
+    <div class="acc" id="accLoi">
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Node.js quá cũ
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>Log hiển thị thông báo yêu cầu Node.js 20+ và script dừng ngay.</p>
+            <p>Nguyên nhân: Egg / Container image đang dùng Node.js cũ.</p>
+            <p><strong>Cách xử lý:</strong> đổi Egg hoặc Container image sang bản Node.js 20 trở lên, sau đó restart server.</p>
+            <div class="code" data-copy-block>
+              <div class="code-head">
+                <span class="code-lang">bash</span>
+                <span class="code-file">kiểm tra phiên bản</span>
+                <div class="code-actions">
+                  <button class="copy-btn" type="button" data-copy>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <pre><code>node -v</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Lỗi EADDRINUSE — port đang được dùng
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>Nguyên nhân: còn tiến trình cũ đang giữ port, thường gặp sau khi restart đột ngột.</p>
+            <p><strong>Cách xử lý:</strong> tìm và dừng tiến trình đang chiếm port rồi restart lại server.</p>
+            <div class="code" data-copy-block>
+              <div class="code-head">
+                <span class="code-lang">bash</span>
+                <span class="code-file">tìm tiến trình theo port</span>
+                <div class="code-actions">
+                  <button class="copy-btn" type="button" data-copy>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <pre><code>ss -lntp
+lsof -i :20128</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Cloudflare không tạo được URL
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>Nguyên nhân thường gặp: container không ra được Internet, hoặc binary cloudflared tải lỗi.</p>
+            <p><strong>Cách xử lý:</strong> chạy cloudflared thủ công để xem log chi tiết.</p>
+            <div class="code" data-copy-block>
+              <div class="code-head">
+                <span class="code-lang">bash</span>
+                <span class="code-file">chạy thủ công</span>
+                <div class="code-actions">
+                  <button class="copy-btn" type="button" data-copy>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <pre><code>./.cloudflared/cloudflared tunnel \
+  --no-autoupdate \
+  --url http://127.0.0.1:$SERVER_PORT</code></pre>
+            </div>
+            <p class="mt-2">
+              Nếu binary bị hỏng, xóa thư mục <code>.cloudflared/</code> rồi restart để script tải lại.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Public URL mở nhưng không hoạt động
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>Kiểm tra local trước: nếu local không trả lời thì Cloudflare cũng không proxy được.</p>
+            <div class="code" data-copy-block>
+              <div class="code-head">
+                <span class="code-lang">bash</span>
+                <span class="code-file">kiểm tra local</span>
+                <div class="code-actions">
+                  <button class="copy-btn" type="button" data-copy>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <pre><code>curl http://127.0.0.1:$SERVER_PORT
+curl http://127.0.0.1:$SERVER_PORT/api/health</code></pre>
+            </div>
+            <p class="mt-2">
+              Nếu local trả lời OK nhưng public lỗi, hãy restart để tạo tunnel mới. Đừng quên
+              Quick Tunnel đổi URL sau mỗi lần restart.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Không đăng nhập được Dashboard
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>
+              Password chỉ được dùng cho lần khởi tạo đầu tiên. Nếu database đã có password hash,
+              giá trị mới sẽ không ghi đè.
+            </p>
+            <p>
+              <strong>Cách xử lý:</strong> đổi password trong Dashboard, hoặc reset bằng cách dừng
+              server rồi xóa file database trong <code>.9router/db/</code> (sẽ mất toàn bộ cấu hình).
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Cài đặt 9Router thất bại
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>Nguyên nhân: container không truy cập được npm registry, hết dung lượng, hoặc thiếu quyền ghi.</p>
+            <p><strong>Cách xử lý:</strong> kiểm tra kết nối và dung lượng đĩa.</p>
+            <div class="code" data-copy-block>
+              <div class="code-head">
+                <span class="code-lang">bash</span>
+                <span class="code-file">chẩn đoán</span>
+                <div class="code-actions">
+                  <button class="copy-btn" type="button" data-copy>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <pre><code>npm ping
+df -h .
+npm install 9router@latest --no-audit --no-fund</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FAQ ============================ -->
+<section id="faq">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-kicker">FAQ</div>
+      <h2 class="sec-title">Câu hỏi thường gặp</h2>
+    </div>
+
+    <div class="acc" id="accFaq">
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Dữ liệu có mất khi restart không?
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>
+              Không, miễn là thư mục <code>.9router/</code> được giữ lại. Toàn bộ database,
+              password hash, JWT secret và API key nằm trong thư mục này.
+            </p>
+            <p>
+              Nếu panel hỗ trợ persistent storage, hãy đảm bảo thư mục đó không bị xóa khi reinstall container.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Đổi password sau khi đã deploy như thế nào?
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>Có hai cách:</p>
+            <p>
+              <strong>Cách 1 — qua Dashboard:</strong> đăng nhập rồi đổi password trong phần cài đặt tài khoản.
+              Đây là cách an toàn nhất.
+            </p>
+            <p>
+              <strong>Cách 2 — qua biến môi trường:</strong> đặt <code>ROUTER_PASSWORD</code> mới,
+              nhưng cách này chỉ có tác dụng nếu database chưa lưu password hash.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          URL thay đổi mỗi lần restart, có cách nào cố định không?
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>
+              Có. Quick Tunnel luôn cấp subdomain ngẫu nhiên nên không thể cố định. Khi cần URL ổn định,
+              hãy dùng Cloudflare Tunnel có tên với domain riêng của bạn.
+            </p>
+            <p>
+              Script vẫn lưu URL cuối cùng vào <code>.9router/last-public-url.txt</code> để bạn tra cứu nhanh.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Script tốn bao nhiêu tài nguyên?
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>
+              Bản thân <code>start.js</code> rất nhẹ, chỉ giữ vài kết nối TCP và một tiến trình con.
+              Phần tốn tài nguyên là 9Router và cloudflared.
+            </p>
+            <p>
+              Khuyến nghị tối thiểu khoảng 1 GB RAM và 1 GB dung lượng đĩa trống cho lần cài đặt đầu tiên.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Có thể chạy mà không dùng Cloudflare Tunnel không?
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>
+              Được. Đặt biến môi trường <code>CF_TUNNEL=0</code>. Script sẽ bỏ qua bước tải
+              cloudflared và chỉ chạy 9Router ở địa chỉ local, truy cập qua IP và port của panel.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="acc-item">
+        <button class="acc-q" type="button">
+          <span class="acc-ico">+</span>
+          Làm sao cập nhật 9Router lên bản mới?
+        </button>
+        <div class="acc-a">
+          <div class="acc-a-inner">
+            <p>
+              Đặt <code>AUTO_UPDATE=1</code> để mỗi lần khởi động script đều cài
+              <code>9router@latest</code>. Nếu không, script chỉ cài khi thư mục
+              <code>node_modules/9router</code> chưa tồn tại.
+            </p>
+            <p>Hoặc chạy thủ công trong terminal của panel:</p>
+            <div class="code" data-copy-block>
+              <div class="code-head">
+                <span class="code-lang">bash</span>
+                <span class="code-file">cập nhật thủ công</span>
+                <div class="code-actions">
+                  <button class="copy-btn" type="button" data-copy>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>
+                    Copy
+                  </button>
+                </div>
+              </div>
+              <pre><code>npm install 9router@latest --no-audit --no-fund</code></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="brand mb-2">
+          <span class="brand-mark">9</span>
+          <span class="brand-text">9<b>ROUTER</b></span>
+        </div>
+        <p>
+          Hướng dẫn deploy 9Router trên Generic / Pterodactyl với một file
+          <code class="kbd">start.js</code>. Tự động cài đặt, tự chọn port, tự đặt password
+          và Cloudflare Quick Tunnel.
+        </p>
+      </div>
+
+      <div>
+        <h5>Nội dung</h5>
+        <ul>
+          <li><a href="#tinh-nang">Tính năng</a></li>
+          <li><a href="#cai-dat">Cài đặt nhanh</a></li>
+          <li><a href="#cau-hinh">Cấu hình</a></li>
+          <li><a href="#source">Mã nguồn start.js</a></li>
+          <li><a href="#loi">Xử lý lỗi</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h5>Credits</h5>
+        <ul>
+          <li>9Router — AI routing gateway</li>
+          <li>Cloudflare Tunnel — secure outbound tunnel</li>
+          <li>Node.js — runtime</li>
+          <li>Generic / Pterodactyl — container</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>Tài liệu hướng dẫn triển khai 9Router trên Generic / Pterodactyl.</span>
+      <span>One file · Auto install · Cloudflare public access</span>
+    </div>
+  </div>
+</footer>
+
+<button class="totop" id="toTop" aria-label="Về đầu trang">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+</button>
+
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+  <span id="toastText">Đã copy</span>
+</div>
+
+<!--
+  Nguồn start.js được nhúng nguyên văn bên dưới (đã escape & < > cho HTML).
+  Nút Copy và Tải start.js đọc qua textContent nên nội dung luôn khớp 100% với file thật.
+-->
+<pre id="startjsSource" class="sr-only" aria-hidden="true"><code>#!/usr/bin/env node
+/* eslint-disable no-console */
+'use strict';
+
+/**
+ * ============================================================================
+ *  9ROUTER GENERIC BOOTSTRAP + CLOUDFLARE QUICK TUNNEL
+ * ============================================================================
+ *  Dùng cho: Pterodactyl / Pelican / VPS / Hosting Generic Node.js
+ *
+ *  Startup command trong panel:
+ *      node start.js
+ *
+ *  Script này tự động:
+ *    [1] Kiểm tra Node.js
+ *    [2] Tạo package.json nếu chưa có
+ *    [3] Cài 9router (npm) nếu chưa có
+ *    [4] Tự chọn PORT (SERVER_PORT -&gt; PORT -&gt; 20128)
+ *    [5] Tự sinh Password + JWT Secret (lưu lại, không đổi sau restart)
+ *    [6] Khởi động 9Router bind 0.0.0.0
+ *    [7] Chờ 9Router sẵn sàng (HTTP health check)
+ *    [8] Tự tải cloudflared (amd64 / arm64 / arm / 386)
+ *    [9] Tạo Cloudflare Quick Tunnel -&gt; in Public URL
+ *
+ *  Biến môi trường (đặt trong panel, KHÔNG cần sửa code):
+ *    SERVER_PORT        Port panel cấp (ưu tiên cao nhất)
+ *    PORT               Port dự phòng
+ *    ROUTER_PASSWORD    Password khởi tạo (nếu bỏ trống sẽ tự sinh)
+ *    JWT_SECRET         JWT signing secret (nếu bỏ trống sẽ tự sinh)
+ *    DATA_DIR           Nơi lưu dữ liệu (mặc định .9router)
+ *    NODE_ENV           production | development
+ *    CF_TUNNEL          0 = tắt Cloudflare Tunnel
+ *    CLOUDFLARED_BIN    Dùng cloudflared có sẵn (đường dẫn tuyệt đối)
+ *    CF_ARGS            Tham số thêm cho cloudflared
+ *    ROUTER_LOG         0 = ẩn log server 9Router
+ *    AUTO_UPDATE        1 = luôn cài 9router@latest khi khởi động
+ *    READY_TIMEOUT      Giây chờ 9Router mở port (mặc định 300)
+ * ============================================================================
+ */
+
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const net = require('net');
+const http = require('http');
+const https = require('https');
+const crypto = require('crypto');
+const { spawn, execSync } = require('child_process');
+
+/* ========================================================================== */
+/*  CẤU HÌNH                                                                  */
+/* ========================================================================== */
+
+const ROOT = __dirname;
+const IS_WIN = process.platform === 'win32';
+
+const PORT = String(
+  process.env.SERVER_PORT ||
+  process.env.PORT ||
+  '20128'
+).trim();
+
+const HOST = '0.0.0.0';
+const LOCAL_URL = `http://127.0.0.1:${PORT}`;
+
+const DATA_DIR = path.resolve(
+  ROOT,
+  process.env.DATA_DIR || '.9router'
+);
+
+const CF_DIR = path.join(ROOT, '.cloudflared');
+const CF_BIN = process.env.CLOUDFLARED_BIN
+  ? path.resolve(process.env.CLOUDFLARED_BIN)
+  : path.join(CF_DIR, IS_WIN ? 'cloudflared.exe' : 'cloudflared');
+
+const CF_PID_FILE = path.join(DATA_DIR, '.cloudflared.pid');
+const URL_FILE = path.join(DATA_DIR, 'last-public-url.txt');
+
+const ROUTER_ENTRY = path.join(ROOT, 'node_modules', '9router', 'cli.js');
+const ROUTER_PKG = path.join(ROOT, 'node_modules', '9router', 'package.json');
+
+const READY_TIMEOUT = Number(process.env.READY_TIMEOUT || 300) * 1000;
+const MIN_NODE_MAJOR = 20;
+const HARD_MIN_NODE_MAJOR = 18;
+
+const CF_ENABLED = process.env.CF_TUNNEL !== '0' &amp;&amp; process.env.CF_TUNNEL !== 'false';
+const SHOW_ROUTER_LOG = process.env.ROUTER_LOG !== '0';
+
+/* ========================================================================== */
+/*  LOG HELPERS                                                               */
+/* ========================================================================== */
+
+const C = {
+  reset: '\x1b[0m',
+  dim: '\x1b[2m',
+  bold: '\x1b[1m',
+  orange: '\x1b[38;5;208m',
+  green: '\x1b[32m',
+  yellow: '\x1b[33m',
+  red: '\x1b[31m',
+  cyan: '\x1b[36m',
+  white: '\x1b[37m'
+};
+
+const hasColor = process.stdout.isTTY || process.env.FORCE_COLOR === '1';
+const paint = (color, text) =&gt; (hasColor ? color + text + C.reset : text);
+
+function log(msg) {
+  console.log(`${paint(C.orange, '[9Router]')} ${msg}`);
+}
+
+function step(n, total, msg) {
+  console.log(`${paint(C.orange, `[${n}/${total}]`)} ${msg}`);
+}
+
+function warn(msg) {
+  console.log(`${paint(C.yellow, '[WARN]')} ${msg}`);
+}
+
+function fail(msg) {
+  console.error(`${paint(C.red, '[ERROR]')} ${msg}`);
+}
+
+function banner(title) {
+  const line = '='.repeat(58);
+  console.log('');
+  console.log(paint(C.orange, line));
+  console.log(paint(C.bold + C.orange, `  ${title}`));
+  console.log(paint(C.orange, line));
+}
+
+/* ========================================================================== */
+/*  TIỆN ÍCH                                                                  */
+/* ========================================================================== */
+
+function readFileSafe(file) {
+  try {
+    const value = fs.readFileSync(file, 'utf8').trim();
+    return value || null;
+  } catch {
+    return null;
+  }
+}
+
+function writeFileSafe(file, content, mode) {
+  try {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    fs.writeFileSync(file, content, { mode: mode || 0o600 });
+    if (!IS_WIN &amp;&amp; mode) {
+      try { fs.chmodSync(file, mode); } catch {}
+    }
+    return true;
+  } catch (e) {
+    warn(`Không ghi được ${path.basename(file)}: ${e.message}`);
+    return false;
+  }
+}
+
+/** Lấy secret: ưu tiên ENV -&gt; file đã lưu -&gt; sinh mới rồi lưu lại. */
+function resolveSecret(envName, fileName, generator) {
+  const fromEnv = (process.env[envName] || '').trim();
+  if (fromEnv) {
+    return { value: fromEnv, source: 'env' };
+  }
+
+  const file = path.join(DATA_DIR, fileName);
+  const saved = readFileSafe(file);
+  if (saved) {
+    return { value: saved, source: 'file' };
+  }
+
+  const generated = generator();
+  writeFileSafe(file, generated, 0o600);
+  return { value: generated, source: 'generated' };
+}
+
+function randomHex(bytes) {
+  return crypto.randomBytes(bytes).toString('hex');
+}
+
+/** Password mạnh, dễ đọc lại trong log nhưng vẫn đủ entropy. */
+function generatePassword() {
+  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+  const symbols = '!@#$%^&amp;*-_=+';
+  const pick = (set, n) =&gt; {
+    let out = '';
+    const bytes = crypto.randomBytes(n);
+    for (let i = 0; i &lt; n; i++) out += set[bytes[i] % set.length];
+    return out;
+  };
+  return `${pick(alphabet, 16)}${pick(symbols, 2)}${pick('0123456789', 2)}`;
+}
+
+function killPidFile(pidFile) {
+  const raw = readFileSafe(pidFile);
+  if (!raw) return;
+  const pid = parseInt(raw, 10);
+  if (!pid || Number.isNaN(pid)) return;
+
+  try {
+    if (IS_WIN) {
+      execSync(`taskkill /F /T /PID ${pid}`, { stdio: 'ignore', windowsHide: true, timeout: 5000 });
+    } else {
+      process.kill(pid, 'SIGTERM');
+      const deadline = Date.now() + 2000;
+      while (Date.now() &lt; deadline) {
+        try { process.kill(pid, 0); } catch { break; }
+      }
+      try { process.kill(pid, 'SIGKILL'); } catch {}
+    }
+  } catch {
+    /* process đã chết */
+  }
+
+  try { fs.unlinkSync(pidFile); } catch {}
+}
+
+/** Kill cả cây process (dùng được cho process detached). */
+function killTree(child) {
+  if (!child || !child.pid) return;
+  try {
+    if (IS_WIN) {
+      execSync(`taskkill /F /T /PID ${child.pid}`, { stdio: 'ignore', windowsHide: true, timeout: 5000 });
+    } else {
+      try { process.kill(-child.pid, 'SIGTERM'); } catch { try { child.kill('SIGTERM'); } catch {} }
+    }
+  } catch {
+    try { child.kill('SIGKILL'); } catch {}
+  }
+}
+
+/* ========================================================================== */
+/*  BƯỚC 1 — KIỂM TRA NODE.JS                                                 */
+/* ========================================================================== */
+
+function checkNode() {
+  const major = Number(process.versions.node.split('.')[0]);
+
+  if (major &lt; HARD_MIN_NODE_MAJOR) {
+    fail(`Node.js ${process.version} quá cũ.`);
+    fail(`9Router yêu cầu Node.js ${MIN_NODE_MAJOR}+. Hãy đổi Egg/Container image.`);
+    process.exit(1);
+  }
+
+  if (major &lt; MIN_NODE_MAJOR) {
+    warn(`Node.js ${process.version} thấp hơn khuyến nghị (${MIN_NODE_MAJOR}+).`);
+    warn('Script vẫn chạy nhưng nên nâng lên Node.js 20/22/24 để ổn định nhất.');
+  }
+}
+
+/* ========================================================================== */
+/*  BƯỚC 2 — PACKAGE.JSON                                                     */
+/* ========================================================================== */
+
+function ensurePackageJson() {
+  const file = path.join(ROOT, 'package.json');
+  if (fs.existsSync(file)) return false;
+
+  fs.writeFileSync(
+    file,
+    JSON.stringify(
+      {
+        name: '9router-generic',
+        version: '1.0.0',
+        private: true,
+        description: '9Router Generic deployment with Cloudflare Quick Tunnel',
+        scripts: { start: 'node start.js' }
+      },
+      null,
+      2
+    ) + '\n'
+  );
+
+  return true;
+}
+
+/* ========================================================================== */
+/*  BƯỚC 3 — CÀI 9ROUTER                                                      */
+/* ========================================================================== */
+
+function npmCmd() {
+  return IS_WIN ? 'npm.cmd' : 'npm';
+}
+
+function installedVersion() {
+  try {
+    return JSON.parse(fs.readFileSync(ROUTER_PKG, 'utf8')).version;
+  } catch {
+    return null;
+  }
+}
+
+function installRouter() {
+  const current = installedVersion();
+  const forceUpdate = process.env.AUTO_UPDATE === '1';
+
+  if (current &amp;&amp; !forceUpdate) {
+    log(`9Router đã có sẵn (v${current}) — bỏ qua cài đặt.`);
+    log('Đặt AUTO_UPDATE=1 trong panel nếu muốn tự cập nhật mỗi lần khởi động.');
+    return;
+  }
+
+  log(forceUpdate &amp;&amp; current
+    ? `Đang cập nhật 9Router (v${current} -&gt; latest)...`
+    : 'Đang cài 9Router (lần đầu, có thể mất 1-3 phút)...');
+
+  try {
+    execSync(`${npmCmd()} install 9router@latest --no-audit --no-fund --loglevel=error`, {
+      cwd: ROOT,
+      stdio: 'inherit',
+      env: { ...process.env, npm_config_update_notifier: 'false' }
+    });
+  } catch {
+    fail('Không cài được 9Router. Kiểm tra kết nối mạng của container.');
+    process.exit(1);
+  }
+
+  if (!fs.existsSync(ROUTER_ENTRY)) {
+    fail('Cài đặt xong nhưng không tìm thấy node_modules/9router/cli.js');
+    process.exit(1);
+  }
+
+  log(`9Router cài đặt thành công (v${installedVersion()}).`);
+}
+
+/* ========================================================================== */
+/*  BƯỚC 4 — KHỞI ĐỘNG 9ROUTER                                                */
+/* ========================================================================== */
+
+function buildRouterEnv(secrets) {
+  return {
+    ...process.env,
+    PORT,
+    HOSTNAME: HOST,
+    NODE_ENV: process.env.NODE_ENV || 'production',
+    DATA_DIR,
+    INITIAL_PASSWORD: secrets.password,
+    JWT_SECRET: secrets.jwtSecret,
+    API_KEY_SECRET: secrets.apiKeySecret,
+    MACHINE_ID_SALT: secrets.machineIdSalt,
+    BASE_URL: process.env.BASE_URL || LOCAL_URL,
+    NEXT_PUBLIC_BASE_URL: process.env.NEXT_PUBLIC_BASE_URL || LOCAL_URL,
+    NEXT_TELEMETRY_DISABLED: '1'
+  };
+}
+
+function startRouter(env) {
+  // --tray        : bắt buộc, tránh menu TUI treo vô hạn khi container không có TTY
+  // --no-browser  : không cố mở browser
+  // --skip-update : không tự update (script đã quản lý)
+  // --log         : đẩy log server ra console panel
+  const args = [
+    ROUTER_ENTRY,
+    '--port', PORT,
+    '--host', HOST,
+    '--no-browser',
+    '--skip-update',
+    '--tray'
+  ];
+
+  if (SHOW_ROUTER_LOG) args.push('--log');
+
+  log(`Khởi động 9Router tại ${HOST}:${PORT} ...`);
+
+  const child = spawn(process.execPath, args, {
+    cwd: ROOT,
+    env,
+    stdio: 'inherit',
+    detached: !IS_WIN
+  });
+
+  child.on('error', (e) =&gt; fail(`Không spawn được 9Router: ${e.message}`));
+  return child;
+}
+
+/** Chờ 9Router sẵn sàng: ưu tiên HTTP /api/health, fallback TCP. */
+function waitForRouter(timeout = READY_TIMEOUT) {
+  const startedAt = Date.now();
+  let lastNote = 0;
+
+  const httpReady = () =&gt; new Promise((resolve) =&gt; {
+    const req = http.get(
+      { host: '127.0.0.1', port: Number(PORT), path: '/api/health', timeout: 3000 },
+      (res) =&gt; {
+        res.resume();
+        resolve(res.statusCode &gt; 0 &amp;&amp; res.statusCode &lt; 500);
+      }
+    );
+    req.on('timeout', () =&gt; { req.destroy(); resolve(false); });
+    req.on('error', () =&gt; resolve(false));
+  });
+
+  const tcpReady = () =&gt; new Promise((resolve) =&gt; {
+    const socket = net.connect({ host: '127.0.0.1', port: Number(PORT) });
+    socket.setTimeout(2500);
+    socket.once('connect', () =&gt; { socket.destroy(); resolve(true); });
+    socket.once('timeout', () =&gt; { socket.destroy(); resolve(false); });
+    socket.once('error', () =&gt; { socket.destroy(); resolve(false); });
+  });
+
+  return new Promise((resolve, reject) =&gt; {
+    const tick = async () =&gt; {
+      if (await httpReady()) return resolve('health');
+      if (await tcpReady()) return resolve('tcp');
+
+      const elapsed = Date.now() - startedAt;
+      if (elapsed &gt; timeout) {
+        return reject(new Error(`9Router không mở port ${PORT} sau ${Math.round(timeout / 1000)}s`));
+      }
+
+      if (elapsed - lastNote &gt; 15000) {
+        lastNote = elapsed;
+        log(`Đang chờ port ${PORT}... (${Math.round(elapsed / 1000)}s)`);
+      }
+
+      setTimeout(tick, 1200);
+    };
+
+    tick();
+  });
+}
+
+/* ========================================================================== */
+/*  BƯỚC 5 — CLOUDFLARED                                                       */
+/* ========================================================================== */
+
+function cloudflaredAsset() {
+  const arch = process.arch;
+  const platform = process.platform;
+
+  if (platform === 'linux') {
+    const map = {
+      x64: 'cloudflared-linux-amd64',
+      arm64: 'cloudflared-linux-arm64',
+      arm: 'cloudflared-linux-arm',
+      ia32: 'cloudflared-linux-386'
+    };
+    const asset = map[arch];
+    if (!asset) throw new Error(`Không hỗ trợ CPU: ${arch}`);
+    return { asset, archive: false };
+  }
+
+  if (platform === 'win32') {
+    const map = {
+      x64: 'cloudflared-windows-amd64.exe',
+      ia32: 'cloudflared-windows-386.exe'
+    };
+    const asset = map[arch];
+    if (!asset) throw new Error(`Không hỗ trợ CPU: ${arch}`);
+    return { asset, archive: false };
+  }
+
+  if (platform === 'darwin') {
+    const map = {
+      x64: 'cloudflared-darwin-amd64.tgz',
+      arm64: 'cloudflared-darwin-arm64.tgz'
+    };
+    const asset = map[arch];
+    if (!asset) throw new Error(`Không hỗ trợ CPU: ${arch}`);
+    return { asset, archive: true };
+  }
+
+  throw new Error(`Không hỗ trợ hệ điều hành: ${platform}`);
+}
+
+/**
+ * Tải file, tự đi theo redirect (GitHub Releases redirect sang CDN).
+ * Dùng URL /releases/latest/download/&lt;asset&gt; nên KHÔNG bị giới hạn rate limit
+ * như khi gọi api.github.com.
+ */
+function download(url, dest, redirects = 6) {
+  return new Promise((resolve, reject) =&gt; {
+    if (redirects &lt; 0) return reject(new Error('Quá nhiều redirect'));
+
+    const request = (target) =&gt; {
+      https
+        .get(target, { headers: { 'User-Agent': '9router-generic' } }, (res) =&gt; {
+          const { statusCode, headers } = res;
+
+          if (statusCode &gt;= 300 &amp;&amp; statusCode &lt; 400 &amp;&amp; headers.location) {
+            res.resume();
+            return request(new URL(headers.location, target).toString());
+          }
+
+          if (statusCode !== 200) {
+            res.resume();
+            return reject(new Error(`HTTP ${statusCode}`));
+          }
+
+          const total = Number(headers['content-length'] || 0);
+          let received = 0;
+          let lastShown = -1;
+
+          const file = fs.createWriteStream(dest);
+
+          res.on('data', (chunk) =&gt; {
+            received += chunk.length;
+            if (!total || !process.stdout.isTTY) return;
+            const pct = Math.floor((received / total) * 100);
+            if (pct &gt;= lastShown + 10) {
+              lastShown = pct;
+              process.stdout.write(`\r${paint(C.dim, `  Đang tải... ${pct}%`)}   `);
+            }
+          });
+
+          res.pipe(file);
+
+          file.on('finish', () =&gt; {
+            file.close(() =&gt; {
+              if (total &amp;&amp; process.stdout.isTTY) process.stdout.write('\r\x1b[K');
+              resolve(dest);
+            });
+          });
+
+          file.on('error', (e) =&gt; {
+            try { fs.unlinkSync(dest); } catch {}
+            reject(e);
+          });
+        })
+        .on('error', reject);
+    };
+
+    request(url);
+  });
+}
+
+async function ensureCloudflared() {
+  if (fs.existsSync(CF_BIN)) {
+    if (!IS_WIN) { try { fs.chmodSync(CF_BIN, 0o755); } catch {} }
+    log('cloudflared đã có sẵn.');
+    return CF_BIN;
+  }
+
+  fs.mkdirSync(CF_DIR, { recursive: true });
+
+  const { asset, archive } = cloudflaredAsset();
+  const url = `https://github.com/cloudflare/cloudflared/releases/latest/download/${asset}`;
+
+  log(`Đang tải cloudflared (${asset})...`);
+
+  try {
+    if (archive) {
+      const tmp = path.join(CF_DIR, 'cloudflared.tgz');
+      await download(url, tmp);
+      execSync(`tar -xzf "${tmp}" -C "${CF_DIR}"`, { stdio: 'ignore' });
+      try { fs.unlinkSync(tmp); } catch {}
+      const extracted = path.join(CF_DIR, 'cloudflared');
+      if (fs.existsSync(extracted) &amp;&amp; extracted !== CF_BIN) fs.renameSync(extracted, CF_BIN);
+    } else {
+      await download(url, CF_BIN);
+    }
+  } catch (e) {
+    fail(`Không tải được cloudflared: ${e.message}`);
+    return null;
+  }
+
+  if (!fs.existsSync(CF_BIN)) {
+    fail('Tải cloudflared xong nhưng không thấy file binary.');
+    return null;
+  }
+
+  if (!IS_WIN) { try { fs.chmodSync(CF_BIN, 0o755); } catch {} }
+  log('cloudflared đã cài xong.');
+  return CF_BIN;
+}
+
+/* ========================================================================== */
+/*  BƯỚC 6 — CLOUDFLARE QUICK TUNNEL                                          */
+/* ========================================================================== */
+
+const URL_REGEX = /https:\/\/[a-z0-9][a-z0-9-]*\.trycloudflare\.com/gi;
+
+let tunnelChild = null;
+let tunnelAttempts = 0;
+let tunnelStopped = false;
+let shuttingDown = false;
+
+function startTunnel(bin) {
+  const extra = (process.env.CF_ARGS || '').trim().split(/\s+/).filter(Boolean);
+
+  const args = [
+    'tunnel',
+    '--no-autoupdate',
+    '--url', LOCAL_URL,
+    ...extra
+  ];
+
+  log(`Tạo Cloudflare Quick Tunnel -&gt; ${LOCAL_URL}`);
+
+  const child = spawn(bin, args, {
+    cwd: CF_DIR,
+    env: { ...process.env },
+    stdio: ['ignore', 'pipe', 'pipe'],
+    detached: !IS_WIN
+  });
+
+  tunnelChild = child;
+
+  if (child.pid) writeFileSafe(CF_PID_FILE, String(child.pid), 0o600);
+
+  let found = false;
+
+  const handle = (buffer) =&gt; {
+    const text = buffer.toString();
+
+    for (const line of text.split(/\r?\n/)) {
+      if (!line.trim()) continue;
+      if (SHOW_ROUTER_LOG) console.log(`${paint(C.dim, '[Cloudflare]')} ${line}`);
+    }
+
+    if (found) return;
+
+    const match = text.match(URL_REGEX);
+    if (!match || !match.length) return;
+
+    found = true;
+    tunnelAttempts = 0;
+
+    const publicUrl = match[0].replace(/[.,)]+$/, '');
+    writeFileSafe(URL_FILE, publicUrl, 0o600);
+    printPublicBanner(publicUrl);
+  };
+
+  child.stdout.on('data', handle);
+  child.stderr.on('data', handle);
+
+  child.on('error', (e) =&gt; fail(`cloudflared lỗi: ${e.message}`));
+
+  child.on('close', (code) =&gt; {
+    if (shuttingDown || tunnelStopped) return;
+
+    tunnelAttempts += 1;
+
+    if (tunnelAttempts &gt; 10) {
+      warn(`cloudflared đã dừng ${tunnelAttempts} lần — không thử lại nữa.`);
+      warn('9Router vẫn chạy bình thường ở địa chỉ local.');
+      return;
+    }
+
+    const delay = Math.min(5 * tunnelAttempts, 30);
+    warn(`cloudflared thoát (code=${code ?? 'unknown'}). Thử lại sau ${delay}s...`);
+    setTimeout(() =&gt; {
+      if (!shuttingDown &amp;&amp; !tunnelStopped) startTunnel(bin);
+    }, delay * 1000);
+  });
+
+  return child;
+}
+
+function printPublicBanner(publicUrl) {
+  const line = '='.repeat(58);
+  const api = `${publicUrl}/v1`;
+  const dashboard = `${publicUrl}/dashboard`;
+
+  console.log('');
+  console.log(paint(C.orange, line));
+  console.log(paint(C.bold + C.orange, '            CLOUDFLARE PUBLIC URL'));
+  console.log(paint(C.orange, line));
+  console.log(`${paint(C.white, 'PUBLIC    :')} ${paint(C.cyan + C.bold, publicUrl)}`);
+  console.log(`${paint(C.white, 'DASHBOARD :')} ${paint(C.cyan, dashboard)}`);
+  console.log(`${paint(C.white, 'API (v1)  :')} ${paint(C.cyan, api)}`);
+  console.log(`${paint(C.white, 'LOCAL     :')} ${paint(C.dim, LOCAL_URL)}`);
+  console.log(`${paint(C.white, 'USER      :')} ${paint(C.green, 'admin')}`);
+  console.log(`${paint(C.white, 'PASSWORD  :')} ${paint(C.yellow, state.password)}`);
+  console.log(paint(C.orange, line));
+  console.log(paint(C.dim, `Đã lưu URL vào ${path.relative(ROOT, URL_FILE)}`));
+  console.log(paint(C.dim, 'Quick Tunnel dùng domain ngẫu nhiên, sẽ đổi mỗi lần restart.'));
+  console.log('');
+}
+
+/* ========================================================================== */
+/*  SHUTDOWN                                                                  */
+/* ========================================================================== */
+
+let routerChild = null;
+const state = { password: '' };
+
+function shutdown(reason) {
+  if (shuttingDown) return;
+  shuttingDown = true;
+  tunnelStopped = true;
+
+  console.log('');
+  log(`Đang dừng server... (${reason})`);
+
+  killTree(tunnelChild);
+  killTree(routerChild);
+  killPidFile(CF_PID_FILE);
+
+  setTimeout(() =&gt; process.exit(0), 1500).unref();
+}
+
+/* ========================================================================== */
+/*  MAIN                                                                      */
+/* ========================================================================== */
+
+async function main() {
+  banner('9ROUTER + CLOUDFLARE TUNNEL  |  GENERIC / PTERODACTYL');
+  console.log(`${paint(C.white, 'Node       :')} ${process.version}`);
+  console.log(`${paint(C.white, 'OS / Arch  :')} ${process.platform} / ${process.arch}`);
+  console.log(`${paint(C.white, 'Bind       :')} ${HOST}:${PORT}`);
+  console.log(`${paint(C.white, 'Local URL  :')} ${LOCAL_URL}`);
+  console.log(`${paint(C.white, 'Data dir   :')} ${DATA_DIR}`);
+  console.log(`${paint(C.white, 'Tunnel     :')} ${CF_ENABLED ? 'BẬT' : 'TẮT (CF_TUNNEL=0)'}`);
+  console.log(paint(C.orange, '='.repeat(58)));
+  console.log('');
+
+  const TOTAL = 7;
+
+  step(1, TOTAL, 'Kiểm tra Node.js...');
+  checkNode();
+
+  step(2, TOTAL, 'Chuẩn bị thư mục dữ liệu...');
+  fs.mkdirSync(DATA_DIR, { recursive: true });
+  killPidFile(CF_PID_FILE); // dọn tunnel cũ còn sót lại sau restart
+
+  step(3, TOTAL, 'Kiểm tra package.json...');
+  if (ensurePackageJson()) log('Đã tạo package.json.');
+
+  step(4, TOTAL, 'Chuẩn bị 9Router...');
+  installRouter();
+
+  const password = resolveSecret('ROUTER_PASSWORD', '.initial-password', generatePassword);
+  const jwtSecret = resolveSecret('JWT_SECRET', '.jwt-secret', () =&gt; randomHex(32));
+  const apiKeySecret = resolveSecret('API_KEY_SECRET', '.api-key-secret', () =&gt; randomHex(32));
+  const machineIdSalt = resolveSecret('MACHINE_ID_SALT', '.machine-id-salt', () =&gt; randomHex(16));
+
+  state.password = password.value;
+
+  const sourceLabel = {
+    env: 'từ Environment Variable',
+    file: 'đã lưu từ lần chạy trước',
+    generated: 'vừa tự sinh và đã lưu lại'
+  };
+
+  log(`Password     : ${paint(C.yellow, password.value)}  (${sourceLabel[password.source]})`);
+  log(`JWT Secret   : ${paint(C.dim, 'đã thiết lập')} (${sourceLabel[jwtSecret.source]})`);
+
+  if (password.source === 'generated') {
+    log('Lưu ý: đây là PASSWORD KHỞI TẠO, chỉ dùng cho lần đăng nhập đầu tiên.');
+    log(`Đặt ROUTER_PASSWORD trong panel để chủ động mật khẩu ở lần deploy sau.`);
+  }
+
+  const env = buildRouterEnv({
+    password: password.value,
+    jwtSecret: jwtSecret.value,
+    apiKeySecret: apiKeySecret.value,
+    machineIdSalt: machineIdSalt.value
+  });
+
+  step(5, TOTAL, 'Khởi động 9Router...');
+  routerChild = startRouter(env);
+
+  await waitForRouter();
+  log(paint(C.green, '9Router đã sẵn sàng.'));
+  log(`Dashboard local: ${paint(C.cyan, `${LOCAL_URL}/dashboard`)}`);
+
+  step(6, TOTAL, CF_ENABLED ? 'Chuẩn bị cloudflared...' : 'Bỏ qua cloudflared (CF_TUNNEL=0).');
+
+  if (CF_ENABLED) {
+    const bin = await ensureCloudflared();
+
+    step(7, TOTAL, 'Tạo Cloudflare Quick Tunnel...');
+
+    if (bin) {
+      startTunnel(bin);
+    } else {
+      warn('Không có cloudflared — chỉ chạy local.');
+    }
+  }
+}
+
+/* ========================================================================== */
+/*  SIGNAL HANDLERS                                                           */
+/* ========================================================================== */
+
+process.on('SIGINT', () =&gt; shutdown('SIGINT'));
+process.on('SIGTERM', () =&gt; shutdown('SIGTERM'));
+process.on('SIGHUP', () =&gt; shutdown('SIGHUP'));
+
+process.on('uncaughtException', (e) =&gt; {
+  fail(`Lỗi không xử lý được: ${e.message}`);
+  shutdown('uncaughtException');
+});
+
+process.on('unhandledRejection', (e) =&gt; {
+  fail(`Promise bị từ chối: ${e &amp;&amp; e.message ? e.message : e}`);
+});
+
+main().catch((e) =&gt; {
+  fail(e.message);
+  shutdown('fatal');
+});
+</code></pre>
+
+<script src="js/code.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
